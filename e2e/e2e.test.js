@@ -1,20 +1,20 @@
-import puppetteer from 'puppeteer';
-import { fork } from 'child_process';
+import puppetteer from "puppeteer";
+import { fork } from "child_process";
 
 jest.setTimeout(30000); // default puppeteer timeout
 
-describe('Popover test', () => {
+describe("Popover test", () => {
   let browser = null;
   let page = null;
   let server = null;
-  const baseUrl = 'http://localhost:9000';
+  const baseUrl = "http://localhost:9000";
 
   beforeAll(async () => {
     server = fork(`${__dirname}/e2e.server.js`);
     await new Promise((resolve, reject) => {
-      server.on('error', reject);
-      server.on('message', (message) => {
-        if (message === 'ok') {
+      server.on("error", reject);
+      server.on("message", (message) => {
+        if (message === "ok") {
           resolve();
         }
       });
@@ -26,6 +26,8 @@ describe('Popover test', () => {
       // devtools: true, // show devTools
     });
     page = await browser.newPage();
+
+    await page.goto(baseUrl);
   });
 
   afterAll(async () => {
@@ -33,11 +35,7 @@ describe('Popover test', () => {
     server.kill();
   });
 
-  test('open page', async () => {
-    await page.goto(baseUrl);
-  });
-
-  test('show popover on click', async () => {
+  test("show popover on click", async () => {
     const popover = await page.evaluate(() => {
       const holder = document.querySelector(".popover-holder");
       holder.click();
@@ -46,8 +44,8 @@ describe('Popover test', () => {
     expect(popover).toBeTruthy();
   });
 
-  test('popover title', async () => {
-    const {popoverTitle, expectedTitle} = await page.evaluate(() => {
+  test("popover title", async () => {
+    const { popoverTitle, expectedTitle } = await page.evaluate(() => {
       const holder = document.querySelector(".popover-holder");
       const popover = document.querySelector(".popover");
       return holder.title, popover.querySelector(".popover__title").textContent;
@@ -55,16 +53,19 @@ describe('Popover test', () => {
     expect(popoverTitle).toBe(expectedTitle);
   });
 
-  test('popover message', async () => {
+  test("popover message", async () => {
     const { popoverMessage, expectedMessage } = await page.evaluate(() => {
       const holder = document.querySelector(".popover-holder");
       const popover = document.querySelector(".popover");
-      return holder.dataset.content, popover.querySelector(".popover__message").textContent;
+      return (
+        holder.dataset.content,
+        popover.querySelector(".popover__message").textContent
+      );
     });
     expect(popoverMessage).toBe(expectedMessage);
   });
 
-  test('remove popover on click', async () => {
+  test("remove popover on click", async () => {
     const popover = await page.evaluate(() => {
       const holder = document.querySelector(".popover-holder");
       holder.click();

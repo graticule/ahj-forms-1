@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       if (openPopover) {
         popoverFactory.removePopover(openPopover.id);
-        openPopovers = openPopovers.filter(el => el.id != openPopover.id);
+        openPopovers = openPopovers.filter((el) => el.id != openPopover.id);
       } else {
         const id = popoverFactory.showPopover(
           holder.getAttribute("title"),
@@ -28,6 +28,5 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     return;
-  })
-
+  });
 });

@@ -29,14 +29,15 @@ export default class Popover {
       element,
     });
 
-    const { top, left, width, height } = parent.getBoundingClientRect();
+    const { top, left, width } = parent.getBoundingClientRect();
 
     document.body.appendChild(element);
-    
-    const { width: elementWidth, height: elementHeight } = element.getBoundingClientRect();
 
-    element.style.top = top - elementHeight - 5 +"px";
-    element.style.left = left + width / 2 - elementWidth/2 + "px";
+    const { width: elementWidth, height: elementHeight } =
+      element.getBoundingClientRect();
+
+    element.style.top = top - elementHeight - 5 + "px";
+    element.style.left = left + width / 2 - elementWidth / 2 + "px";
 
     return id;
   }
